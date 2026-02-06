@@ -13,10 +13,17 @@ Note that Elon's capital will be $33B.
 """
 
 ### all your code below ###
-
+principal = 44000000000  # initial amount to be deposited
+ten_year_rate = 3.96  # interest rate for 10-year bond (will be divided by 100)
+twenty_year_rate = 4.32  # interest rate for 20-year bond (will be divided by 100)
+n_10 = 10  # number of years to compound deposit for 10-year bond
+n_20 = 20  # number of years to compound deposit for 20-year bond
+# final formula: final = principal * ((1 + (rate / 100)) ** n)
 
 # final answer for 10-year
-ten_year_final = None
+ten_year_final = principal * ((1 + (ten_year_rate / 100)) ** n_10)
+print(ten_year_final)
 
 # final answer for 20-year
-twenty_year_final = None
+twenty_year_final = principal * ((1 + (twenty_year_rate / 100)) ** n_20)
+print(twenty_year_final)

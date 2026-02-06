@@ -13,7 +13,19 @@ Note: this problem does not require the "compounding interest" formula from the 
 """
 
 ### Your code here ###
+in_state_cost = 30792  # cost for one year for in-state student
+out_state_cost = 47882  # cost for one year for out-of-state student
 
-in_state_gift = 0
+# relationship: cost = gift * 0.05
+# formula used: gift = cost / 0.05
 
+<<<<<<< Updated upstream
 out_state_gift = 0
+=======
+in_state_gift = in_state_cost / 0.05
+
+out_state_gift = out_state_cost / 0.05
+
+print(in_state_gift)
+print(out_state_gift)
+>>>>>>> Stashed changes
