@@ -13,7 +13,7 @@ The calculate time of flight and time of contact for the force plate data is ava
 Compare your results against that dataset and then upload your final solution to gradescope.
 
 Additional details can be found in [Exploring Amateur Performance in Athletic Tests
-Using Wearable Sensors](https://www.jasonforsyth.net/pdf/mitchell-sieds-camera-ready.pdf)
+Using Wearable Sensors](https://www.jasonforsyth.net/assets/pdf/mitchell-sieds-camera-ready.pdf)
 
 **3.4.2 - Tensile Strength Testing**
 
