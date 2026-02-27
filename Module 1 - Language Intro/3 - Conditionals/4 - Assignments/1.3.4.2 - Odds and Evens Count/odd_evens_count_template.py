@@ -29,3 +29,15 @@ num_evens = 0
 num_odds = 0
 
 ### YOUR CODE BEGINS HERE ###
+# loop through the list of numbers
+    # check if the number is even or odd
+        # if it's even, add 1 to num_evens
+        # if it's odd, add 1 to num_odds
+for num in nums:
+    if num % 2 == 0:
+        num_evens += 1
+    else:
+        num_odds += 1
+
+print(num_evens)
+print(num_odds)
