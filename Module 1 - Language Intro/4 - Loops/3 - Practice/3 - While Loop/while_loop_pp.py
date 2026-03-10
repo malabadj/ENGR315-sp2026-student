@@ -15,7 +15,7 @@ while a != 5:
 # this loop is going to multiply the variable x by 2 3 times
 b = 5
 x = 0
-while x != 0:
+while x < 3:
     b = b * 2
     x = x + 1
 
@@ -24,9 +24,13 @@ while x != 0:
 c = 3
 y = 0
 while y < 5:
-    break
+    c = c + c
+    y = y + 1
 
 # it's time to combine both of these concepts.
 # write a loop entirely from scratch that prints out a statement 6 times
 # the counter variable you will use is z
 z = 0
+while z < 6:
+    print("This is the " + str(z) + "th time this statement has been printed.")
+    z = z + 1
