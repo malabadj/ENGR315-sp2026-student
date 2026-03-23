@@ -18,9 +18,9 @@ def parse_nyt_data(file_path=''):
 
     # open the NYT file path
     try:
-        fin = open(file_path)
+        fin = open(r'C:\Users\danie\Documents\GitHub\ENGR315-sp2026-student\data\covid\us-counties.csv')
     except FileNotFoundError:
-        print('File ', file_path, ' not found. Exiting!')
+        print('File ', r'C:\Users\danie\Documents\GitHub\ENGR315-sp2026-student\data\covid\us-counties.csv', ' not found. Exiting!')
         sys.exit(-1)
 
     # get rid of the headers
@@ -40,7 +40,11 @@ def parse_nyt_data(file_path=''):
         # format is date,county,state,fips,cases,deaths
         (date,county, state, fips, cases, deaths) = line.rstrip().split(",")
 
-        # clean up the data to remove empty entries
+        # clean up the data to remove empty entries and entries outside of Harrisonburg and Rockingham.
+        if state != "Virginia":
+            continue
+        if county != "Harrisonburg city" and county != "Rockingham":
+            continue
         if cases=='':
             cases=0
         if deaths=='':
@@ -67,6 +71,22 @@ def first_question(data):
     """
 
     # your code here
+    #Sort the data by date and then find the first entry for each locality with cases > 0
+    data.sort(key=lambda x: x[0])  # Sort by date
+    rockingham_first = None
+    harrisonburg_first = None
+
+    for date, county, state, fips, cases, deaths in data:
+        if county == "Rockingham" and cases > 0:
+            if rockingham_first is None:
+                rockingham_first = date
+        if county == "Harrisonburg city" and cases > 0:
+            if harrisonburg_first is None:
+                harrisonburg_first = date
+
+    print("First positive COVID case in Rockingham County:", rockingham_first)
+    print("First positive COVID case in Harrisonburg:", harrisonburg_first)
+
     return
 
 def second_question(data):
@@ -78,6 +98,24 @@ def second_question(data):
     """
 
     # your code here
+    # To find the greatest number of new daily cases, we need to calculate the daily new cases from the cumulative cases.
+    data.sort(key=lambda x: (x[1], x[0]))  # Sort by county and then by date
+    rockingham_cases = {}
+    harrisonburg_cases = {}
+    # Calculate daily new cases by taking the difference between consecutive entries for each locality
+    for date, county, state, fips, cases, deaths in data:
+        if county == "Rockingham":
+            rockingham_cases[date] = cases
+        elif county == "Harrisonburg city":
+            harrisonburg_cases[date] = cases
+    rockingham_new_cases = {date: rockingham_cases[date] - rockingham_cases.get(prev_date, 0) for date, prev_date in zip(sorted(rockingham_cases.keys())[1:], sorted(rockingham_cases.keys())[:-1])}
+    harrisonburg_new_cases = {date: harrisonburg_cases[date] - harrisonburg_cases.get(prev_date, 0) for date, prev_date in zip(sorted(harrisonburg_cases.keys())[1:], sorted(harrisonburg_cases.keys())[:-1])}
+    # Find the day with the greatest number of new daily cases for each locality
+    rockingham_max_day = max(rockingham_new_cases, key=rockingham_new_cases.get)
+    harrisonburg_max_day = max(harrisonburg_new_cases, key=harrisonburg_new_cases.get)
+    #print both the number of new cases and the corresponding day
+    print("Greatest number of new daily cases in Rockingham County:", rockingham_new_cases[rockingham_max_day], " on ", rockingham_max_day)
+    print("Greatest number of new daily cases in Harrisonburg:", harrisonburg_new_cases[harrisonburg_max_day], " on ", harrisonburg_max_day)
     return
 
 def third_question(data):
@@ -89,6 +127,30 @@ def third_question(data):
     """
     
     # your code here
+    #set up the sorting, and then calculate the daily new cases just as above, but then calculate the 7-day sums of new cases for each locality and find a maximum.
+    data.sort(key=lambda x: (x[1], x[0]))  # Sort by county and then by date
+    rockingham_cases = {}
+    harrisonburg_cases = {}
+    for date, county, state, fips, cases, deaths in data:
+        if county == "Rockingham":
+            rockingham_cases[date] = cases
+        elif county == "Harrisonburg city":
+            harrisonburg_cases[date] = cases
+   # Calculate daily new cases by taking the difference between neighboring entries for each region
+    rockingham_new_cases = {date: rockingham_cases[date] - rockingham_cases.get(prev_date, 0) for date, prev_date in zip(sorted(rockingham_cases.keys())[1:], sorted(rockingham_cases.keys())[:-1])}
+    harrisonburg_new_cases = {date: harrisonburg_cases[date] - harrisonburg_cases.get(prev_date, 0) for date, prev_date in zip(sorted(harrisonburg_cases.keys())[1:], sorted(harrisonburg_cases.keys())[:-1])}
+    
+    # Calculate the 7-day sums of new cases for each region and find a maximum.
+    rockingham_7day_sums = {date: sum(rockingham_new_cases.get(prev_date, 0) for prev_date in sorted(rockingham_new_cases.keys())[max(0, sorted(rockingham_new_cases.keys()).index(date)-6):sorted(rockingham_new_cases.keys()).index(date)+1]) for date in sorted(rockingham_new_cases.keys())}
+    harrisonburg_7day_sums = {date: sum(harrisonburg_new_cases.get(prev_date, 0) for prev_date in sorted(harrisonburg_new_cases.keys())[max(0, sorted(harrisonburg_new_cases.keys()).index(date)-6):sorted(harrisonburg_new_cases.keys()).index(date)+1]) for date in sorted(harrisonburg_new_cases.keys())}
+    
+    # Find the day with the greatest number of new cases in a 7-day period for each region
+    rockingham_worst_day = max(rockingham_7day_sums, key=rockingham_7day_sums.get)
+    harrisonburg_worst_day = max(harrisonburg_7day_sums, key=harrisonburg_7day_sums.get)
+    
+    #Print out results for both regions, including both the number of cases and the day when the period ended.
+    print("Worst 7-day period in Rockingham County:", rockingham_7day_sums[rockingham_worst_day], " ending on ", rockingham_worst_day)
+    print("Worst 7-day period in Harrisonburg:", harrisonburg_7day_sums[harrisonburg_worst_day], " ending on ", harrisonburg_worst_day)
     return
 
 if __name__ == "__main__":
