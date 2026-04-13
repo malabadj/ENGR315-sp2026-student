@@ -35,6 +35,20 @@ def one_sample_tests(_files: list, _mean: float, _alpha: float, _less_than: bool
     reject_null_hypothesis = []
 
     # YOUR CODE HERE #
+    for file in _files:
+        # load data from file
+        data = np.loadtxt(file)
+
+        # perform t-test
+        t_statistic, p_value = ttest_1samp(data, _mean)
+
+        # determine if null hypothesis should be rejected based on test type and p-value
+        if _less_than:
+            if p_value / 2 < _alpha and t_statistic < 0:
+                reject_null_hypothesis.append(file)
+        else:
+            if p_value / 2 < _alpha and t_statistic > 0:
+                reject_null_hypothesis.append(file)
 
     # return samples that were rejected
     return reject_null_hypothesis
@@ -64,7 +78,7 @@ if __name__ == "__main__":
 
     # write samples to files
     write_to_csv('base1.txt', base_distribution_one)
-    write_to_csv('base2.txt', base_distribution_one)
+    write_to_csv('base2.txt', base_distribution_two)
     write_to_csv('lesser1.txt', less_than_distribution_one)
     write_to_csv('lesser2.txt', less_than_distribution_two)
     write_to_csv('greater1.txt', greater_than_distribution_one)

@@ -44,6 +44,15 @@ Step #4: Generate a plot for the Fitted Normal Distribution, include a title and
 """
 
 # Your Code Here #
+sample_mean = np.mean(normal_samples)
+sample_std_dev = np.std(normal_samples)
+x = np.linspace(start=-31, stop=41, num=10000)
+y = norm.pdf(x, loc=sample_mean, scale=sample_std_dev)
+plt.plot(x, y, label='Fitted Normal')
+plt.title('Fitted Normal Distribution')
+plt.xlabel('x')
+plt.ylabel('Probability Density')
+
 
 """
 Step 5: Compare your Fit against the true data
@@ -93,6 +102,14 @@ Step #9: Generate a plot for the Fitted Exponential Distribution, include a titl
 """
 
 # Your Code Here #
+(fit_loc, fit_scale) = expon.fit(exponential_samples)
+fit_beta = fit_scale
+exp_x = np.linspace(start=0, stop=50, num=10000)
+exp_y = expon.pdf(exp_x, loc=fit_loc, scale=fit_beta)
+plt.plot(exp_x, exp_y, label='Fitted Exponential')
+plt.title('Fitted Exponential Distribution')
+plt.xlabel('x')
+plt.ylabel('Probability Density')
 
 """
 Step #10: Compare your Fit against the true data
