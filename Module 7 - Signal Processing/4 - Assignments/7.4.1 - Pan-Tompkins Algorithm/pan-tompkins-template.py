@@ -12,39 +12,74 @@ def detect_heartbeats(filepath):
         return list()
 
     # import the CSV file using numpy
-    path = filepath
+    
 
     # load data in matrix from CSV file; skip first two rows
-    ## your code here
+    data= np.loadtxt(filepath, delimiter=',', skiprows=2)
 
     # save each vector as own variable
-    ## your code here
+    Time = data[:, 0]
+    mlII = data[:, 1]
+    v1 = data[:, 2]
+
 
     # identify one column to process. Call that column signal
 
-    signal = -1 ## your code here
+    signal = mlII
 
     # pass data through LOW PASS FILTER (OPTIONAL)
-    ## your code here
+    #implement low pass filter
+    from scipy.signal import butter, filtfilt
+    def butter_lowpass(cutoff, fs, order=5):
+        nyq = 0.5 * fs
+        normal_cutoff = cutoff / nyq
+        b, a = butter(order, normal_cutoff, btype='low', analog=False)
+        return b, a
+    def lowpass_filter(data, cutoff, fs, order=5):
+        b, a = butter_lowpass(cutoff, fs, order=order)
+        y = filtfilt(b, a, data)
+        return y
+    cutoff = 15  # desired cutoff frequency of the filter, Hz
+    fs = 360  # sample rate, Hz
+    signal = lowpass_filter(signal, cutoff, fs)
+
 
     # pass data through HIGH PASS FILTER (OPTIONAL) to create BAND PASS result
-    ## your code here
+    #implement high pass filter
+    def butter_highpass(cutoff, fs, order=5):
+        nyq = 0.5 * fs
+        normal_cutoff = cutoff / nyq
+        b, a = butter(order, normal_cutoff, btype='high', analog=False)
+        return b, a
+    def highpass_filter(data, cutoff, fs, order=5):
+        b, a = butter_highpass(cutoff, fs, order=order)
+        y = filtfilt(b, a, data)
+        return y
+    cutoff = 5  # desired cutoff frequency of the filter, Hz
+    signal = highpass_filter(signal, cutoff, fs)
+
 
     # pass data through differentiator
-    ## your code here
+    differentiated_signal = np.diff(signal)
 
     # pass data through square function
-    ## your code here
+    squared_signal = np.square(differentiated_signal)
 
     # pass through moving average window
-    ## your code here
+    window_size = 5  # example window size, can be adjusted
+    moving_average_signal = np.convolve(squared_signal, np.ones(window_size)/window_size, mode='valid')
 
     # use find_peaks to identify peaks within averaged/filtered data
     # save the peaks result and return as part of testbench result
 
-    ## your code here peaks,_ = find_peaks(....)
+    ## your code here 
+    from scipy.signal import find_peaks
+    peaks,_ = find_peaks(moving_average_signal, 
+                         height=np.mean(moving_average_signal),
+                         distance=200)
+    
 
-    beats = None
+    beats = peaks
 
     # do not modify this line
     return signal, beats
@@ -66,7 +101,7 @@ if __name__ == "__main__":
     print_debug = True
 
     # set to true if you wish to show a plot of each detection process
-    show_plot = False
+    show_plot = True
 
     ### DO NOT MODIFY BELOW THIS LINE!!! ###
 
