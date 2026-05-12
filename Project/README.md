@@ -1,39 +1,37 @@
-**This is a placeholder for project report**
+# Healthcare Obesity Data Analysis Program
 
-You can refer to this [link](https://code.visualstudio.com/docs/languages/markdown) to check how to preview your markdown document in VSCode.
+## Project Overview
 
-# Title
+This Python program analyzes healthcare and obesity-related datasets using several different statistical and graphical methods. The program parses CSV healthcare data, organizes it into multiple storage structures, and generates visualizations to help identify obesity trends and relationships between lifestyle factors and obesity rates.
 
-## Sub-title
+The project combines three separate analysis programs into one cohesive application.
 
-- Item
-    - subitem
-- Item
+---
 
-+ item
-+ item
-* item
-* item
+# Main Features
 
+## Included Analyses
 
-### more-subtitle
+- Obesity rates by demographic group
+- National obesity trends over time
+- Correlation analysis between obesity and:
+    - Physical inactivity
+    - Dietary habits / fruit consumption
+- Automatic graph generation using matplotlib
+- Statistical calculations including:
+    - averages
+    - correlation coefficients
+    - trendlines / linear regression
 
-1. Numbered item
-    1. subitem
-2. numbered item
+---
 
-paragraph `import matlpotlib`
+# Required Libraries
 
-paragraph *italic* or **bold**
+The following Python libraries are required:
 
-    import matplotlip
-
-OR
-
-``` 
-import matplotlib
-```
-
-Link [Text](URL)
-
-images as ![Caption](URL)
+```python
+import sys
+import csv
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt

@@ -54,6 +54,13 @@ Step 4: Manually iterate through the signal and apply the threshold with timeout
 # loop through signal finding beats
 for value in signal:
     ## Use a conditional statement to see if the signal is above a threshold...
+    if value > detection_threshold:
+        ## If the signal is above the threshold, check to see if it has been long enough since the last beat was found (using the timeout value)
+        if current_index - last_detected_index > detection_time_out:
+            ## If it has been long enough, we have found a beat! Update the last detected index and add the beat to our list of beats detected
+            last_detected_index = current_index
+            beats_detected.append(current_index)
+
 
     ## Once an index is found, place the index in the beats_detected list
     current_index += 1
@@ -69,6 +76,10 @@ Step 5: Plot the results
 # plot the original data
 plt.plot(signal)
 plt.title('Filtered ECG Signal with Beat Annotations')
+# include axis labels
+plt.xlabel('Time (ms)')
+plt.ylabel('Amplitude')
 
 plt.plot(beats_detected, signal[beats_detected], 'X')
 plt.show()
+

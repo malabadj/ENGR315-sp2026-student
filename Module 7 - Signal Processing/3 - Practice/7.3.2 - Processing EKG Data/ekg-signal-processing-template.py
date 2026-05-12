@@ -20,31 +20,41 @@ Step #1: load data in matrix from CSV file; skip first two rows. Name the return
 
 signal = 0
 ## YOUR CODE HERE ##
+signal = np.loadtxt(signal_filepath, delimiter=',', skiprows=2)
+
 
 """
 Step 2: (OPTIONAL) pass data through LOW PASS FILTER
 """
 
-## YOUR CODE HERE ##
-
 """
 Step 3: Pass data through differentiator. Optional to make it weighted.
 """
-
-## YOUR CODE HERE ##
-
+## implement differentiator, utilizing the slope of the signal.
+np.diff(signal)
 
 """
 Step 4: Square the results of the previous step
 """
- ## YOUR CODE HERE ##
+ ## square the results
+signal = signal ** 2
+
 
 """
 Step 5: Pass a moving average over your data
 """
+# implement moving average, using a for loop to iterate through the signal and average over a window
+window_size = 5
+moving_average_signal = np.zeros(len(signal) - window_size + 1)
+for i in range(len(moving_average_signal)):
+    moving_average_signal[i] = np.mean(signal[i:i + window_size])
+
 
 ## YOUR CODE HERE
 # make a plot of the results. Can change the plot() parameter below to show different intermediate signals
-plt.title('Process Signal for ' + database_name)
-plt.plot(signal)
+plt.figure(figsize=(10, 5))
+plt.plot(moving_average_signal)
+plt.title('EKG Signal for ' + database_name)
+plt.xlabel('Time (ms)')
+plt.ylabel('Amplitude')
 plt.show()

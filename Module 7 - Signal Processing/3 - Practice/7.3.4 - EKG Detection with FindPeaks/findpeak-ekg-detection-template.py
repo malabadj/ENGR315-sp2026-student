@@ -42,6 +42,7 @@ Step 4: Plot the results
 # plot all the find_peaks results on the same graph
 plt.plot(signal)
 plt.title('Filtered ECG Signal with Beat Annotations')
-
+plt.xlabel('Time (ms)')
+plt.ylabel('Amplitude')
 plt.plot(peaks, signal[peaks], 'X')
 plt.show()
